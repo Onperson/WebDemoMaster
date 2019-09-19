@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Css的清除浮动的方式，给祖先容器标签设置高度，让标签可以浮起来</title>
+		<style type="text/css">
+			li{
+				float: left;
+				width: 130px;
+				height: 20px;
+				background-color: pink;
+			}
+			div{
+				background-color: blue;
+				width: 100px;
+				height: 100px;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<ul>
+				<li>我是个好人</li>
+				<li>是你个清早</li>
+				<li>怎么清除浮动</li>	   
+			</ul>
+			
+		</div>
+		<p>通过设置嵌套标签容器的高度,让内容控件在容器标签浮动起来></p>
+		<p>实现效果就是让内容标签清除了浮动属性，其实只是参照物变了，变成了父容器。</p>
+	   <div>
+		 <ul>
+		 	   <li>我是个好人</li>
+		 	   <li>是你个清早</li>
+		 	    <li>怎么清除浮动呢？</li>
+		 </ul>  
+	   </div>
+	  
+	</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width-device-width,initial-scale=0.0,maximum-scale=0.0, minimum-scale=500,user-scalable=no, minimal-ui">
+		<title>纷极阅读首页</title>
+		<style>
+			*{
+				margin: 0px;
+				padding: 0px;
+			}
+			div{
+				width: 200px;
+				height: 200px;
+			}
+			.red_div{
+				float: left;
+				background-color: red;
+			}
+			.yellow_div{
+				background-color: yellow;
+		        left: 88%;
+				float: right;
+			}
+			.centre_div{
+				position: relative;
+				background-color: pink;
+				
+				left: 44%;
+			}
+			.green_div{
+				float: left;
+				background-color: green;
+				top:22%;
+				
+			}
+			.blue_div{
+				float: right;
+				top:22%;
+				left: 88%;
+				background-color: blue;  
+			}
+			.parent_div{
+				width: 100%;
+				height: 400px;
+				background: black;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="parent_div">
+		<div class="red_div"> 我是第一个方块</div>
+		<div class="yellow_div">我是右上角的方块</div>
+		<div class="centre_div">我是中间的方块</div>
+		<div class="green_div" id="thrid_div">我是左下角的方块</div>
+		<div class="blue_div">我是右下角的方块</div>	
+		</div>
+		<p>这里使用父容器标签，子标签里面进行浮动布局并不会影响父标签的布局结构</p>
+		<p>父标签的布局的宽、高必须能够容纳足够的标签。否则显示不下的将会进行浮动到父容器的下面</p>
+		<div class="parent_div">
+		<div class="red_div"> 我是第一个方块</div>
+		<div class="yellow_div">我是右上角的方块</div>
+		<div class="centre_div">我是中间的方块</div>
+		<div class="green_div" id="thrid_div">我是左下角的方块</div>
+		<div class="blue_div">我是右下角的方块</div>	
+		</div>
+	</body>
+</html>
