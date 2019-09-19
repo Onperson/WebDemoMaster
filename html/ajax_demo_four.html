@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		
+	</head>
+	<body>
+		<h1></h1>
+	</body>
+	<script src="../js/jquery.js"></script>
+	<script>
+
+		//第一种异步获取数据的方式
+		let xhr
+		let data
+		if (window.XMLHttpRequest) {
+		    xhr = new XMLHttpRequest();
+		} else {
+		    xhr = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		
+		xhr.open("GET", 'https://api.myjson.com/bins/djdbh', true);
+		//每当readyState状态发生变化时就会调用此函数
+		//readyState有5个状态 0: 请求未初始化 1: 服务器连接已建立  2: 请求已接收  3: 请求处理中  4: 请求已完成，且响应已就绪
+		//status有两个状态  200: 请求处理成功  404: 未找到页面
+		xhr.onreadystatechange = function () {
+		    //确保再拿取到数据之后再对数据进行处理
+		    if (xhr.readyState === 4 && xhr.status === 200) {
+		        data = xhr.responseText;
+				var nodeData = document.querySelector("h1");
+				nodeData.innerHTML = data;
+		        console.log(JSON.parse(data))
+		    }else{
+		        console.log('change')
+		    }
+		}
+		xhr.send();
+	</script>
+</html>
