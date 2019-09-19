@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>XmlHttpRequest原生请求网络</title>
+	</head>
+	<body>
+		<h1>XmlHttpRequest原生请求网络</h1>
+		<button onclick="getServersData()">请求网络</button>
+		<div id="responseDiv"></div>
+	</body>
+	<script type="text/javascript">
+		function getServersData(){
+			//先创建有一个XmlHttpRequest对象
+			var xmlHttpRequest;
+			//IE6和IE5不支持XmlHttpRequest,所以需要适配
+			if(window.XMLHttpRequest){//浏览器是否支持XmlHttpRequest
+			   xmlHttpRequest = new XMLHttpRequest();
+			}else{
+				//适配代码
+			   xmlHttpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			
+			//设置网络请求回调函数
+			xmlHttpRequest.onreadystatechange = function(){
+				/**
+				 *  什么是readyState
+                    readyState是XMLHttpRequest对象的一个属性，
+                    用来标识当前XMLHttpRequest对象处于什么状态。
+                    readyState总共有5个状态值，分别为0~4，每个值代表了不同的含义
+                   
+                    0：初始化，XMLHttpRequest对象还没有完成初始化
+                    1：载入，XMLHttpRequest对象开始发送请求
+                    2：载入完成，XMLHttpRequest对象的请求发送完成
+                    3：解析，XMLHttpRequest对象开始读取服务器的响应
+                    4：完成，XMLHttpRequest对象读取服务器响应结束
+				 */
+				//判断网络请求状态值,200表示成功
+				if(xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200){
+					console.log(xmlHttpRequest.responseText)
+					var responseData = document.getElementById("responseDiv");
+					//展示到网页上
+					responseData.innerHTML = xmlHttpRequest.responseText;
+				}
+			}
+		 //发送网络请求
+		xmlHttpRequest.open("GET","https://api.myjson.com/bins/djdbh",true);
+		xmlHttpRequest.send();
+		}
+	</script>
+</html>

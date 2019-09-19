@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+	
+	<head>
+		<meta charset="utf-8">
+		<title>Web计算机</title>
+		<style type="text/css">
+			.web_counter{
+				width: 300px;
+				height: 570px;
+				background-color: black;
+				margin: 0,auto;
+			}
+		    .show_result{
+				width: 300px;
+				height: 50px;
+				font-size: 30px;
+				text-align: left;
+				padding-top: 10px;
+				position: relative;
+				overflow: hidden;
+				background: greenyellow;
+			}
+			table{
+				position: relative;
+				width: 300px;
+				height: 250px;
+				margin: 0,auto;
+			}
+			td{
+			   width: 100px;
+			   height: 50px;
+			   position: relative;
+			   background-color: aqua;
+			   text-align: center;
+			   font-size: 22px;
+			}
+			td.action_btn{
+				width: 120px;
+				height: 100px;
+				background-color: yellow;
+			}
+			.action_reset{
+				width: 300px;
+				height: 50px;
+				position: relative;
+				text-align: center;
+				text-justify: auto;
+				text-align: -webkit-center;
+				background-color: #FFFF00;
+			}
+			.active_input{
+				width: 300px;
+				height: 50px;
+			    margin-top: 2px;
+				text-align: right;
+				font-size: 30px;
+				padding-top: 10px;
+				overflow: hidden;
+				background-color: white;
+				
+			}
+		</style>
+		
+	</head>
+	<body>
+		<div class="web_counter">
+			<div>
+				<div  id="show_result" class ="show_result"></div>
+				<div id="active_input" class="active_input"></div>
+			</div>
+		
+			<table>
+				<tr>
+					<td id="number_seven">7</td>
+					<td id="number_eight">8</td>
+					<td id="number_nine">9</td>
+					<td id="action_add" class="action_btn">+</td>
+				</tr>
+				<tr>
+					<td id="number_four">4</td>
+					<td id="number_five">5</td>
+					<td id="number_six">6</td>
+					<td id="action_cut" class="action_btn">-</td>
+				</tr>
+				<tr>
+					<td id="number_one">1</td>
+					<td id="number_two">2</td>
+					<td id="number_there">3</td>
+					<td id="action_ride" class="action_btn">*</td>
+				</tr>
+				<tr>
+					<td id="number_zear">0</td>
+					<td id="number_point">.</td>
+					<td id="action_result">=</td>
+					<td id="action_divide" class="action_btn">/</td>
+				</tr>
+			</table>
+			<div  id= "active_reset" class="action_reset">AC</div>
+		</div>
+	</body>
+	<script>
+		  // 先找到页面的所有标签\
+		 var numberOne = document.getElementById("number_one");
+		var numberTwo = document.getElementById("number_two");
+		var numberThere = document.getElementById("number_there");
+		var numberFour = document.getElementById("number_four");
+		var numberFive = document.getElementById("number_five");
+		var numberSix = document.getElementById("number_six");
+		var numberSeven = document.getElementById("number_seven");
+		var numberEight = document.getElementById("number_eight");
+		var numberNine = document.getElementById("number_nine");
+		var numberZear = document.getElementById("number_zear");
+		
+		var activeAdd = document.getElementById("action_add");
+		var activeCut = document.getElementById("action_cut");
+		var activeRide = document.getElementById("action_ride");
+		var activeDivide = document.getElementById("action_divide");
+		
+		var activeResult = document.getElementById("action_result");
+		var numberPoint = document.getElementById("number_point");
+		var showResult =  document.getElementById("show_result");
+		var activeReset = document.getElementById("active_reset");
+		var activeInput = document.getElementById("active_input");
+		/**思路步骤:
+		 *1）显示的数字和计算的数字需要分开定义变量，只有计算结果的时候，显示的数字才会等于计算的数值。
+		 * 2）每个按钮的功能都不一样，表示数值进行的元算的方式也不一样。
+		 * 3）显示的数字需要定义两个变量定义，一个变量表示数字显示的次数。
+		 * 4）显示的两次数字最后需要使用计算方法计算得到结果。
+		 * 5）如果没有复位键，那么计算完成之后，显示结果值之后，需要清空第一次录入和第二次录入的值，重新进行录入可以继续进行运算。
+		 * 6) 点击功能键说明用户完成了对上一次录入的操作，应该给上一次录入赋值，并开始下一次数值录入。
+		 * 7）如果用户结束两次录入之后没有计算结果，而是继续按下计算功能键，需要先计算上一次计算结果，然后使用上一次的计算结果开始下一次计算。
+		 */
+		 var inputResult = "0";
+		 var fristInput = 0;
+		 var secondInput = 0;
+		 var resultValue = 0;
+		 var inputValue = "";
+		 var saveInputStr = "";
+		 //定义四个标识运算按钮被点击了
+		 var addBtnClicked = false;
+		 var cutBtnClicked = false;
+		 var rideBtnCliked = false;
+		 var divideBtnClick = false;
+		 var finishFristInput = false;
+		 var secondInputFinish = false;
+		 
+		 
+		 numberOne.onclick = function(){ //点击数字1,显示数字1
+		   if(inputResult == "0"){
+			    inputResult = "1";
+		   }else{
+			    inputResult += "1";
+		   }
+		   showResult.innerHTML = inputResult;
+		   showInputActive();
+		 };
+		numberTwo.onclick = function(){ //点击数字2,显示数字2
+		  if(inputResult == "0"){
+			  inputResult = "2";  
+		  }else{
+			   inputResult += "2";
+		  }
+		  showResult.innerHTML = inputResult;
+		  showInputActive();
+		};
+		 numberThere.onclick = function(){
+	      if(inputResult == "0"){
+			inputResult = "3";
+	      }else{
+			inputResult += "3";
+	      }		 		  
+		   showResult.innerHTML = inputResult;
+		    showInputActive();
+		 };
+		 numberFour.onclick = function(){ 
+		  if(inputResult == "0"){
+		      inputResult = "4";
+		  }else{
+		  	  inputResult += "4";
+		  }		 
+		  showResult.innerHTML = inputResult;
+		   showInputActive();
+		 };
+		 numberFive.onclick = function(){	
+		  if(inputResult == "0"){
+		  	  inputResult = "5";
+		  }else{
+		  	  inputResult += "5";
+		  }		 
+		  showResult.innerHTML = inputResult;
+		   showInputActive();
+		 };
+		 numberSix.onclick = function(){ 
+		 if(inputResult == "0"){
+		 	 inputResult = "6";
+		 }else{
+		 	 inputResult += "6";
+		 }		 
+		 showResult.innerHTML = inputResult;
+		  showInputActive();
+		 };
+		 numberSeven.onclick = function(){
+		 if(inputResult == "0"){
+		 	inputResult = "7";
+		 }else{
+		 	inputResult += "7";
+		 }		
+		  showResult.innerHTML = inputResult;
+		  showInputActive();
+		 };
+		 numberEight.onclick = function(){		
+		 if(inputResult == "0"){
+		 	 inputResult = "8";
+		 }else{
+		 	 inputResult += "8";
+		 }		 
+		 showResult.innerHTML = inputResult;
+		  showInputActive();
+		 };
+		 numberNine.onclick = function(){ 	 
+		  if(inputResult == "0"){
+		  	  inputResult = "9";
+		  }else{
+		  	   inputResult += "9";
+		  }		 
+		  showResult.innerHTML = inputResult;
+		   showInputActive();
+		 };
+		 numberZear.onclick = function(){
+		if(inputResult == "0"){
+			inputResult = "0"; 
+		}else{
+		    inputResult += "0";	 
+		}	
+		  showResult.innerHTML = inputResult;
+		   showInputActive();
+		 };
+		 numberPoint.onclick = function(){
+		  inputResult += ".";
+		  showResult.innerHTML = inputResult;
+		   showInputActive();
+		 };
+		 activeAdd.onclick = function(){
+			 addBtnClicked = true;
+			 mathInputActions();
+			  showInputActive();
+		 };
+		activeCut.onclick = function(){ 
+			cutBtnClicked = true;
+		    mathInputActions();
+			 showInputActive();
+		};
+		activeRide.onclick = function(){ 
+			rideBtnCliked = true;
+		   mathInputActions();
+			 showInputActive();
+		};
+		activeDivide.onclick = function(){ 
+			divideBtnClick = true;
+		    mathInputActions();
+			 showInputActive();
+		};
+		activeResult.onclick = function(){
+			  mathInputActions();
+			   showInputActive();
+		};
+		 activeReset.onclick = function(){
+			inputResult = "";
+			fristInput = 0;
+			secondInput = 0;
+			inputResult = 0;					
+			showResult.innerHTML = "";	
+			inputValue = "";
+			saveInputStr = "";
+			activeInput.innerHTML = "";		
+			finalInputStr = "";
+			finishFristInput = false;
+			secondInputFinish = false;
+		 };
+		 //写四个方法执行算法运算
+		 /**
+		  * 加法运算
+		  * @param {Object} valueOne
+		  * @param {Object} valueTwo
+		  */
+		 function addInputValue(){
+			  addBtnClicked = false;
+			return fristInput + secondInput;	
+		 }
+		 
+		function cutInputValue(){
+			  cutBtnClicked = false;
+			return fristInput - secondInput;	
+		}
+		function rideInputValue(){
+			  rideBtnCliked = false;
+			return fristInput * secondInput;	
+		}
+		function diveInputValue(){
+			  divideBtnClick = false;
+			return fristInput / secondInput;	
+		}
+		function mathInputActions(){
+			if(fristInput ==0){
+				fristInput = parseFloat(inputResult);
+				inputResult = "0"; //清空第一次输入数据	
+			}else{
+				secondInput = parseFloat(inputResult);	//记录第二次输入数据	
+				secondInputFinish = true;
+			}
+			//如果两次输入的数据大于0则进行计算
+			if( fristInput >0 && secondInput >0){
+				var mathValue = 0;
+				if(addBtnClicked){
+					  mathValue = addInputValue();
+				}else if(cutBtnClicked){
+					  mathValue = cutInputValue();
+				}else if(rideBtnCliked){
+					  mathValue = rideInputValue();
+				}else if(divideBtnClick){
+					  mathValue =  diveInputValue();
+				}
+				inputResult = mathValue;
+				showResult.innerHTML = inputResult;
+			}		
+		}
+		
+		function showInputActive(){
+			// alert(fristInput);
+			// alert(secondInput);
+			// alert(inputResult);
+			//如果第一次输入大于0则进行显示运算符号
+		  if(fristInput >0 && !finishFristInput){	
+				inputValue = fristInput;
+				if(addBtnClicked){
+					inputValue += "+";
+				}else if(cutBtnClicked){
+					inputValue += "-";
+				}else if(rideBtnCliked){
+					inputValue += "*";
+				}else if(divideBtnClick){
+					inputValue += "/";
+				}else if(secondInput >0){
+					inputValue += secondInput;
+				}
+				saveInputStr = inputValue;
+				activeInput.innerHTML = inputValue;
+				//isDoMath = true;
+				finishFristInput = true;
+			}else if(secondInput >0 && secondInputFinish){	
+				saveInputStr += secondInput;
+				saveInputStr += "="+inputResult;
+				fristInput = inputResult;
+				activeInput.innerHTML = saveInputStr;
+				fristInput = parseFloat(inputResult); //计算完成之后清空之前的输入数值
+				inputResult = "";
+				secondInput =0;
+				saveInputStr = "";
+				finishFristInput = false;
+			}else{
+				//alert("显示输入:"+inputResult);
+				//这里没有录入第一次输入的时候是直接显示数值
+				//录入第一次输入之后就需要组拼第一次输入的字符
+				//用户再次点击运算按钮之后,结束第二次录入,这个时候就开始显示计算结果.
+				if(inputResult >0 && !finishFristInput){ 
+					inputValue = inputResult;
+					activeInput.innerHTML = inputValue;
+				}else{ //如果结束了第一次录入,开始拼接字符串,然后设置下一次开始计算的条件
+					 var secondInputStr = saveInputStr; //每次重新给输入赋新值.
+					 secondInputStr += inputResult;
+					//这里存在第二次输入没有结束,但是输入的结果却重复添加的问题.					
+					activeInput.innerHTML = secondInputStr;
+				}
+			}
+		}
+	</script>
+</html>
